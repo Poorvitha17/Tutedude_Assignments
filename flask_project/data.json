@@ -1,5 +1,17 @@
-{
-  "id": 1,
-  "name": "Poorvitha",
-  "course": "Git"
-}
+[
+    {
+        "id": 1,
+        "name": "Poorvitha",
+        "course": "Python"
+    },
+    {
+        "id": 2,
+        "name": "John",
+        "course": "Flask"
+    },
+    {
+        "id": 3,
+        "name": "Sara",
+        "course": "MongoDB"
+    }
+]
