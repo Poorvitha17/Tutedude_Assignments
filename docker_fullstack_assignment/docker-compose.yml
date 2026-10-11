@@ -1,0 +1,37 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: flask-backend
+
+    ports:
+      - "5000:5000"
+
+    networks:
+      - fullstack-network
+
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: node-frontend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      BACKEND_URL: http://backend:5000
+
+    depends_on:
+      - backend
+
+    networks:
+      - fullstack-network
+
+
+networks:
+  fullstack-network:
+    driver: bridge
