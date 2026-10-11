@@ -35,7 +35,12 @@ client = MongoClient(
 )
 
 database = client["student_database"]
+
+# Existing students collection
 collection = database["students"]
+
+# Task 3 - To-Do collection
+todo_collection = database["todo_items"]
 
 
 # Home route
@@ -64,13 +69,13 @@ def api():
         }), 500
 
 
-# Display form
+# Display student form
 @app.route('/form')
 def form():
     return render_template('form.html')
 
 
-# Handle form submission
+# Handle student form submission
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
@@ -88,7 +93,7 @@ def submit():
             'course': course
         }
 
-        # Insert into MongoDB Atlas
+        # Insert student into MongoDB Atlas
         collection.insert_one(student_data)
 
         # Redirect to success page
@@ -105,6 +110,36 @@ def submit():
 @app.route('/success')
 def success():
     return render_template('success.html')
+
+
+# -------------------------------------------------
+# Task 3 - Backend API for To-Do items
+# -------------------------------------------------
+
+@app.route('/submittodoitem', methods=['POST'])
+def submit_todo_item():
+    try:
+        # Get values submitted by the To-Do form
+        item_name = request.form.get('itemName', '').strip()
+        item_description = request.form.get('itemDescription', '').strip()
+
+        # Validate form fields
+        if not item_name or not item_description:
+            return "Item Name and Item Description are required.", 400
+
+        # Create MongoDB document
+        todo_data = {
+            "itemName": item_name,
+            "itemDescription": item_description
+        }
+
+        # Insert To-Do item into MongoDB
+        todo_collection.insert_one(todo_data)
+
+        return "To-Do item submitted successfully!", 200
+
+    except Exception as error:
+        return f"Error: {str(error)}", 500
 
 
 if __name__ == '__main__':
